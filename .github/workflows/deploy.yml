@@ -3,23 +3,28 @@ name: Deploy to Google Cloud Storage
 on:
   push:
     branches:
-      - main  # 触发部署的分支，这里设置为main分支
+      - main  # 或你用于部署的其他分支
 
 jobs:
   deploy:
-    runs-on: ubuntu-latest  # 定义运行环境
+    runs-on: ubuntu-latest
 
     steps:
     - name: Checkout code
-      uses: actions/checkout@v3  # 检出代码
+      uses: actions/checkout@v3
 
     - name: Set up Cloud SDK
-      uses: google-github-actions/setup-gcloud@v1  # 设置Google Cloud SDK
+      uses: google-github-actions/setup-gcloud@v1
       with:
-        project_id: ${{ secrets.GCP_PROJECT_ID }}  # 从GitHub Secrets中读取项目ID
-        service_account_key: ${{ secrets.GCP_SA_KEY }}  # 从GitHub Secrets中读取服务账户密钥
+        project_id: ${{ secrets.GCP_PROJECT_ID }}
+        service_account_key: ${{ secrets.GCP_SA_KEY }}
         export_default_credentials: true
 
-    - name: Configure gsutil & Upload files
-      run: |
-        gsutil rsync -r . gs://chai_assignment5 # 同步public目录到指定的GCP存储桶
+    - name: Upload HTML files
+      run: gsutil cp *.html gs://chai_assignment5
+
+    - name: Upload CSS files
+      run: gsutil cp *.css gs://chai_assignment5
+
+    - name: Upload JavaScript files
+      run: gsutil cp *.js gs://chai_assignment5
