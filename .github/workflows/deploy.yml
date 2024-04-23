@@ -22,4 +22,4 @@ jobs:
 
     - name: Configure gsutil & Upload files
       run: |
-        gsutil cp ./path/to/your/files gs://chai_assignment5 # 同步public目录到指定的GCP存储桶
+        gsutil rsync -r ./public gs://chai_assignment5 # 同步public目录到指定的GCP存储桶
